@@ -1,4 +1,5 @@
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Scanner;
 import java.util.TreeSet;
 
@@ -22,17 +23,31 @@ public class AppointmentScheduler {
      */
     public boolean book(Appointment requested) {
         // TODO: Check hours, previous neighbor, next neighbor; add if valid.
-        return false;
+        if(requested.getStartMinutes() < OPEN_MINUTES || requested.getEndMinutes() > CLOSED_MINUTES)
+        {
+            return false;
+        }
+        Appointment before = schedule.floor(requested);
+        Appointment after = schedule.ceiling(requested);
+        if(requested.compareTo(before) - before.getDurationMinutes() < 0 || after.compareTo(requested) - requested.getDurationMinutes() < 0)
+        {
+            return false;
+        }
+        schedule.add(requested);
+        return true;
+
     }
 
     /** TODO 2: Print appointments chronologically, or an empty-schedule message. */
-    public void printSchedule() {
-        // TODO: Use the TreeSet's sorted iteration order.
+    public void printSchedule()
+    {
+        System.out.println(schedule);
     }
 
     /** TODO 3: Cancel the appointment that STARTS at the given minute, if any. */
     public boolean cancel(int startMinutes) {
         // TODO: A temporary Appointment.keyAt(startMinutes) can act as a search key.
+
         return false;
     }
 
